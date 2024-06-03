@@ -56,14 +56,17 @@ class NeucyberPercerptionCOLoader(ExperimentalTaskLoader):
             # 1. source is float, NDT2 needs unit8 input
             # 2. data validation: after round, ntk data min is zero, max is 236 which do not make sense for 50 ms bin size.
             #    this is relate to padding value setting
-            full_spikes = np.round(h5file["ntk"][:]).astype(np.uint8)
+            full_spikes = h5file["ntk"][:]
+            full_spikes = full_spikes * cfg.bin_size_ms / 1000  # original data is instaneous firing rate, which is smoothed by Gaussian.
+            full_spikes = np.round(full_spikes).astype(np.uint8)
+            logger.info(f"full_spikes statistics: min [{full_spikes.min()}], max [{full_spikes.max()}], mean [{full_spikes.mean()}]")
 
         full_spikes = torch.tensor(full_spikes)
-        print(full_spikes.shape, full_spikes.max())
+
         meta_payload = {}
         meta_payload["path"] = []
 
-        for t in range(1):
+        for t in range(full_spikes.size(0)):
             single_payload = {
                 DataKey.spikes: create_spike_payload(full_spikes[t], context_arrays),
                 # DataKey.bhvr_vel: bhvr_vars[DataKey.bhvr_vel][t].clone(),  # for unupervised pretraining, bhvr data is not needed, ignore this currently
@@ -79,9 +82,11 @@ if __name__ == "__main__":
         "/home/yuezhifeng_lab/aochuan/DATA/workspace/electrophysiological_data_process/code/ndt2/context_general_bci/data/preprocessed/neucyber_data"
     )
     context_name = "Bohr-main"
+    cfg = DatasetConfig()
+    cfg.bin_size_ms = 50
     NeucyberPercerptionCOLoader.load(
         "/home/yuezhifeng_lab/aochuan/DATA/workspace/electrophysiological_data_process/code/ndt2/context_general_bci/data/neucyber_data/perception/bohr/bohr_240402_01.mat",
-        None,
+        cfg,
         preprocessed_path,
         None,
         [context_name],
