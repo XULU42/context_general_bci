@@ -610,6 +610,40 @@ class RTTContextInfo(ContextInfo, _RTTContextInfoBase):
                 datapath=path,
             )
         return map(make_info, datapath_folder.glob("*.mat"))
+    
+
+@dataclass
+class NeucyberPerceptionContextInfo(ContextInfo, _RTTContextInfoBase):
+    r"""
+        We make this separate from regular ReachingContextInfo as subject hash isn't unique enough.
+    """
+
+    def _id(self):
+        return f"{self.date_hash}"
+
+    @classmethod
+    def build_several(cls, datapath_folder_str: str, arrays=["main"], alias_prefix="neucyber_perception"):
+        r"""
+            TODO: not obvious how we can detect whether datapath has S1 or not
+        """
+        datapath_folder = Path(datapath_folder_str)
+        if not datapath_folder.exists():
+            logger.warning(f"Datapath folder {datapath_folder} does not exist. Skipping.")
+            return []
+
+        def make_info(path: Path):
+            subject, date, set = path.stem.split("_")
+            subject = SubjectArrayRegistry.query_by_subject(subject)
+            date_hash = f"{date}_{set}"
+            return RTTContextInfo(
+                subject=subject,
+                task=ExperimentalTask.neucyber_perception_co,
+                _arrays=arrays,
+                alias=f"{alias_prefix}-{subject.name.value}-{date_hash}",
+                date_hash=date_hash,
+                datapath=path,
+            )
+        return map(make_info, datapath_folder.glob("*.mat"))
 
 
 @dataclass

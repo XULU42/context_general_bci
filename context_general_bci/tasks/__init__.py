@@ -28,6 +28,8 @@ class ExperimentalTask(OrderedEnum):
     marino_batista_mp_reaching = "marino_batista_mp_reaching"
     marino_batista_mp_iso_force = "marino_batista_mp_iso_force"
 
+    neucyber_perception_co = "neucyber_perception_co"
+
 from .task_registry import ExperimentalTaskRegistry, ExperimentalTaskLoader
 # Exports
 from .passive_icms import ICMSLoader
@@ -40,3 +42,4 @@ from .churchland_misc import ChurchlandMiscLoader
 from .pitt_co import PittCOLoader
 from .delay_reach import DelayReachLoader
 from .marino_batista import MarinoBatistaLoader
+from .neucyber_interception import NeucyberPercerptionCOLoader

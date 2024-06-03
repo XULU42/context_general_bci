@@ -1,0 +1,35 @@
+# @package _global_
+
+defaults:
+  - /model: flat_enc_dec
+  - /dataset: flat
+model:
+  causal: true
+  subject_embed_strategy: EmbedStrat.token
+  task:
+    mask_ratio: 0.5 # for efficiency
+  neurons_per_token: 16
+  max_neuron_count: 255
+
+dataset:
+  eval_ratio: 0.1
+  pad_value: 254  # this should be considered later for time bin size 50, which from data we know max spike counts in 50ms is 227
+  neurons_per_token: 16
+
+  max_arrays: 1
+  max_channels: 288
+
+  scale_ratio: 1.0
+  # scale_limit_per_eval_session: 300 # no limit
+
+  datasets:
+  - neucyber_perception.*
+  eval_datasets:
+  - neucyber_perception-Bohr-240402_01
+
+train:
+  accumulate_batches: 2 # auto = 128 (12G GPUs), effective = 256
+  autoscale_batch_size: false
+  batch_size: 64
+
+notes: "Sorted, Patch size 32"

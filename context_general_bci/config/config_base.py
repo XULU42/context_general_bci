@@ -340,6 +340,18 @@ class RTTConfig(ExperimentalConfig):
 
     def reproc_dict(self):
         return {'chop_size_ms': self.chop_size_ms, 'include_sorted': self.include_sorted}
+    
+@dataclass
+class NeucyberPerceptionCOConfig(ExperimentalConfig):
+    chop_size_ms: int = 1000
+    load_covariates: bool = True
+    include_sorted: bool = False
+
+    sampling_rate: int = 1000 # static
+    covariate_sampling_rate: int = 100
+
+    def reproc_dict(self):
+        return {'chop_size_ms': self.chop_size_ms, 'include_sorted': self.include_sorted}
 
 @dataclass
 class MazeConfig(ExperimentalConfig):
@@ -462,6 +474,7 @@ class DatasetConfig:
     nlb_rtt: NLBConfig = field(default_factory=NLBConfig)
     churchland_maze: MazeConfig = field(default_factory=MazeConfig)
     odoherty_rtt: RTTConfig = field(default_factory=RTTConfig)
+    neucyber_perception_co: NeucyberPerceptionCOConfig = field(default_factory=NeucyberPerceptionCOConfig)
     dyer_co: DyerCOConfig = field(default_factory=DyerCOConfig)
     gallego_co: ExperimentalConfig = field(default_factory=ExperimentalConfig)
     churchland_misc: ExperimentalConfig = field(default_factory=ExperimentalConfig)

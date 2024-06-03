@@ -27,6 +27,7 @@ class SubjectName(OrderedEnum):
     earl = "Earl"
     nigel = "Nigel"
     rocky = "Rocky"
+    bohr = "Bohr"
 
 from .array_info import SubjectInfo, ArrayInfo, ArrayID, GeometricArrayInfo, AliasArrayInfo, SortedArrayInfo
 from .array_registry import SubjectArrayRegistry, create_spike_payload
@@ -36,3 +37,4 @@ subject_array_registry = SubjectArrayRegistry()
 # These import lines ensure registration
 from . import pitt_chicago
 from . import nlb_monkeys
+from . import neocyber_monkeys

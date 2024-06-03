@@ -20,6 +20,7 @@ from .context_info import (
     GDrivePathContextInfo,
     BCIContextInfo,
     BatistaContextInfo,
+    NeucyberPerceptionContextInfo,
 )
 
 from context_general_bci.tasks import ExperimentalTask
@@ -136,6 +137,8 @@ if not os.getenv('NDT_SUPPRESS_DEFAULT_REGISTRY', False):
         # *ReachingContextInfo.build_several('./data/even_chen_delay/000121/sub-Reggie', ExperimentalTask.delay_reach, alias_prefix='even_chen_delay_reggie'),
 
         *RTTContextInfo.build_several('./data/odoherty_rtt/', alias_prefix='odoherty_rtt'),
+
+        *NeucyberPerceptionContextInfo.build_several("./data/neucyber_data/perception/bohr", alias_prefix="neucyber_perception"),  # alias is used for identify dataset in config
 
         DyerCOContextInfo.build(('mihi', 1), ExperimentalTask.dyer_co, alias='dyer_co_mihi_1'),
         DyerCOContextInfo.build(('mihi', 2), ExperimentalTask.dyer_co, alias='dyer_co_mihi_2'),
